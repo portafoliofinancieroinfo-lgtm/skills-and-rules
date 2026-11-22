@@ -14,17 +14,17 @@ visual del proyecto abierto en ese momento, recrear la interfaz en solo lectura
 para dejar comentarios encima, o planificar cambios visuales y funcionales sin
 ambigüedades.
 
-## Dónde guardar el archivo (primera vez y actualizaciones)
+## Dónde guardar el archivo (`maps/` dentro del proyecto)
 
-1. **Primera vez en el proyecto:** antes de escribir el archivo por primera vez,
-   **pregunta al usuario dónde prefiere guardar** `prototipo-<proyecto>.html`,
-   ofreciendo opciones claras según el proyecto actual (por ejemplo: en la raíz
-   del proyecto `./prototipo-<proyecto>.html`, en `./docs/prototipo-<proyecto>.html`,
-   o en una carpeta externa/personalizada que el usuario indique).
-2. **Actualizaciones posteriores:** si el usuario ya indicó una ruta o ya existe
-   un `prototipo-<proyecto>.html` previo en esa ubicación, **sobrescribe
-   directamente ese mismo archivo** (así el usuario solo recarga el navegador sin
-   cambiar de enlace ni acumular copias).
+1. **Ubicación por defecto:** guarda y **sobrescribe siempre** el prototipo en la
+   carpeta `maps/` en la raíz del proyecto activo:
+   - `./maps/prototipo-<proyecto>.html`
+2. **Sincronizador local sin tokens (`./maps/actualizar_mapa.py` y `./maps/Actualizar mapa.bat`):**
+   - Si el proyecto aún no tiene `./maps/actualizar_mapa.py`, créalo junto al
+     prototipo para que sincronice automáticamente `MAPA_META`, iconos `<svg>`
+     de `lucide-react`, logo base64, inspección de bloques (`--diff`,
+     `--ver-bloque`) y validación de sintaxis (`node --check` + `0` emojis) sin
+     gastar tokens de IA.
 
 > Usa el formato de cajas/nodos abstractos únicamente si el usuario pide de
 > forma explícita un "mapa de flujo" o "diagrama de arquitectura". Por defecto,
