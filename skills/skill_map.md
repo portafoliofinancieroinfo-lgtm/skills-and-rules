@@ -19,7 +19,7 @@ ambigüedades.
 1. **Ubicación por defecto:** guarda y **sobrescribe siempre** el prototipo en la
    carpeta `maps/` en la raíz del proyecto activo:
    - `./maps/prototipo-<proyecto>.html`
-2. **Sincronizador local sin tokens (`./maps/actualizar_mapa.py` y `./maps/Actualizar mapa.bat`):**
+2. **Sincronizador local sin tokens (`./maps/actualizar_mapa.py`):**
    - Si el proyecto aún no tiene `./maps/actualizar_mapa.py`, créalo junto al
      prototipo para que sincronice automáticamente `MAPA_META`, iconos `<svg>`
      de `lucide-react`, logo base64, inspección de bloques (`--diff`,
