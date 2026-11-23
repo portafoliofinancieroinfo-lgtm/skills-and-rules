@@ -62,35 +62,29 @@ ambigüedades.
      - **Estructura y micro-interacciones reales:** replica textos exactos,
        subpestañas, acordeones, modales/overlays y logo local (incrustado en
        base64 si es liviano), 100% solo lectura y sin llamar APIs reales.
-   - **Barra superior de revisión e interacción natural:**
-     - **Clic izquierdo:** navega libremente por toda la app (sin bloquear
-       botones, pestañas ni menús).
-     - **Clic derecho:** coloca un pin numerado (`#1`, `#2`…) sobre esa posición
-       y detecta `data-elemento="<Pantalla> › <Elemento>"` (si hay elementos
-       acumulados con `Shift`, crea un único comentario agrupándolos todos).
-     - **`Shift + clic derecho`:** selecciona o deselecciona múltiples elementos
-       de la pantalla (mostrando borde resaltado y contador); al hacer **clic
-       derecho** sin `Shift` (o pulsar el botón de comentar selección), los
-       agrupa en un solo comentario.
-     - **`Ctrl + arrastrar` un pin existente:** mueve el pin por la pantalla y
-       al soltar detecta automáticamente con `elementFromPoint` el nuevo
-       `data-elemento` donde quedó ubicado.
-     - Panel derecho con etiquetas (**Cambiar**, **Agregar**, **Quitar**,
-       **No tocar**, **Idea / Duda**) y caja de texto libre.
-     - Guardado automático en `localStorage` usando una clave única por
-       proyecto (`skill_map_<proyecto>_v1`).
-     - Botón **Generar / Copiar cambios** con copia al portapapeles en Markdown
-       y descarga `.md`.
+   - **Barra superior de revisión e interacción natural (Estándar Unificado sin superposición):**
+     - **Estilo adaptable al tema del proyecto:** `#barra-mapa` usa las variables de superficie, texto, borde y acento del propio proyecto (claro/oscuro) e incluye el badge `Solo lectura · <proyecto>`, pestañas de vista y acciones a la derecha.
+     - **Modo Navegar vs. Modo `Comentar (C)` con marco de inspección (`#hoverOutline`):**
+       - En Modo Navegar, el **clic izquierdo** navega libremente por toda la app y el **clic derecho** coloca un comentario al instante.
+       - El botón **`Comentar (C)`** (o tecla `C`) activa el modo de inspección en vivo: al pasar el cursor sobre cualquier `[data-elemento]` muestra `#hoverOutline` con el nombre exacto del componente, y un simple **clic izquierdo** crea el comentario.
+     - **Globo flotante inline (`#commentPopover`):** al crear o hacer clic en un pin se abre un globo flotante junto al elemento con las **5 pastillas de color** en 1 clic (`Cambiar` `#00A896`, `Agregar` `#059669`, `Quitar` `#DC2626`, `No tocar` `#D97706`, `Idea / Duda` `#2563EB`), `<textarea>` con foco inmediato (`Ctrl+Enter` para confirmar) y botones **`Mover`**, **`Quitar`** y **`Listo`**. Si un comentario recién creado se cierra con `Esc` o clic afuera sin texto, se descarta automáticamente para no dejar pines vacíos.
+     - **Motor anti-superposición de pines:**
+       - **Anclaje al borde superior derecho** del `[data-elemento]` real para no tapar etiquetas ni celdas de datos (con respaldo en coordenadas guardadas).
+       - **Cápsula agrupada (`.pin-cluster`):** cuando 2 o más comentarios apuntan al mismo elemento o posición cercana, se agrupan en una sola cápsula horizontal compacta (`#1`, `#2`…) donde cada número conserva el color de su tipo.
+       - **Relajación anti-colisión + líneas guía SVG (`.pin-leaders`):** separa automáticamente marcadores cercanos y dibuja una línea guía punteada hacia el punto de anclaje cuando un marcador se desplaza.
+       - **Botón `Pines (H)`** (o tecla `H`): oculta o muestra todos los pines y líneas guía en 1 clic para inspeccionar la interfaz limpia sin borrar comentarios.
+     - **Selección múltiple (`Shift + clic`) y reubicación (`Mover` o `Ctrl + arrastrar`):**
+       - `Shift + clic` acumula varios `[data-elemento]` en `#multiBadge` y el botón **`Comentar juntos`** los agrupa en un solo comentario.
+       - Cada comentario se puede reubicar en 1 clic con el botón **`Mover`** (banner guiado + clic en el nuevo elemento) o con **`Ctrl + arrastrar`**.
+     - **Panel lateral derecho (`#panel-mapa`) y modal de exportación (`#modalExport`):**
+       - Panel derecho sincronizado con `#commentPopover` (tarjetas con pastillas de color, botones `Mover`/`Quitar` y salto directo con scroll suave + resaltado del elemento).
+       - Guardado automático en `localStorage` usando una clave única por proyecto (`skill_map_<proyecto>_v1`).
+       - Botón **`Generar / Copiar cambios`** que abre el modal `#modalExport` con vista previa Markdown, **`Copiar al portapapeles`** y **`Descargar .md`**.
      - **Estándar de 3 vistas en `#barra-mapa`:**
        - **`App 1:1`**: réplica interactiva navegable completa.
-       - **`Mapa de tablas`**: atlas desplazable con índice sticky (`Ir a tabla:`),
-         todas las tablas del sistema **reutilizando los mismos datos/renderers**
-         de `App 1:1` (sin duplicar HTML) y botones `Abrir en App 1:1`.
-       - **`Ventanas de registro`**: galería con índice sticky mostrando todos
-         los paneles laterales, modales, diálogos, ajustes y popovers con botón
-         `Probar en App 1:1`.
-       - Pines, `Shift + clic derecho` y `Ctrl + arrastrar` operativos en las 3
-         vistas.
+       - **`Mapa de tablas`**: atlas desplazable con índice sticky (`Ir a tabla:`), todas las tablas del sistema **reutilizando los mismos datos/renderers** de `App 1:1` (sin duplicar HTML) y botones `Abrir en App 1:1`.
+       - **`Ventanas de registro`**: galería con índice sticky mostrando todos los paneles laterales, modales, diálogos, ajustes y popovers con botón `Probar en App 1:1`.
+       - Todo el motor de comentarios, cápsulas anti-superposición y líneas guía opera en las 3 vistas.
 3. **Protocolo de actualización incremental por diferencias (ahorro de tiempo y tokens):**
    - Incluir en la línea 2 de cada `prototipo-<proyecto>.html`:
      `<!-- MAPA_META: proyecto=<nombre> | commit=<git-HEAD> | actualizado=<YYYY-MM-DD HH:MM> -->`
